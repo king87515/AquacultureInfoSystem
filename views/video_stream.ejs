@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<title>Dashboard</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- 在https中引入了http的文件，會將http強轉成https -->
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" type="text/css" href="assets/scripts/jquery-ui-1.12.1.custom/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="assets/scripts/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/scripts/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css" />
+
+	<link type="text/css" rel="stylesheet" href="assets/scripts/jsgrid-1.5.3/jsgrid.min.css" />
+	<link type="text/css" rel="stylesheet" href="assets/scripts/jsgrid-1.5.3/jsgrid-theme.min.css" />
+
+	<script type="text/javascript" src="assets/scripts/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="assets/scripts/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+	<script type="text/javascript" src="assets/scripts/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="assets/scripts/jsgrid-1.5.3/jsgrid.min.js"></script>
+
+	<script type="text/javascript" src="assets/scripts/daterangepicker-master/moment.min.js"></script>
+	<script type="text/javascript" src="assets/scripts/daterangepicker-master/daterangepicker.js"></script>
+	<link type="text/css" rel="stylesheet" href="assets/scripts/daterangepicker-master/daterangepicker.css" />
+
+	<link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="assets/vendor/linearicons/style.css">
+	<link rel="stylesheet" href="assets/vendor/chartist/css/chartist-custom.css">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" href="assets/css/main.css">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+	<link rel="stylesheet" href="assets/css/demo.css">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/icon.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="assets/img/icon.png">
+
+	<script type="text/javascript" src="js/script/video_stream.js"></script>
+
+	<script src="assets/scripts/Chart.js-2.9.4/dist/Chart.js" charset="utf-8"></script>
+</head>
+
+<body onload="LoadVideo()">
+	<!-- WRAPPER -->
+	<div id="wrapper">
+		<!-- NAVBAR -->
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="brand">
+				<a href="index.ejs"><img src="assets/img/logo.png" alt="Klorofil Logo" width="140px"
+						class="img-responsive logo"></a>
+			</div>
+			<div class="container-fluid">
+				<!-- USER BAR -->
+				<div id="Header" style="padding-top: 1%;">
+					<ul style="float: right!important; height: 40px">
+						<li style="float: left; display: block; position: relative; margin-right: 10px;">
+							<%= user.userName %>
+						</li>
+						<li style="float: left; display: block; position: relative; margin-right: 20px;"> 您好 !</li>
+						<li style="float: left; display: block; position: relative; margin-right: 10px;">
+							<a href="/logout" a class="btn btn-primary"
+								style="height: 28px; font-size: 12px; margin-left:5px; margin-top:-5px; line-height:1;">登出</a>
+						</li>
+					</ul>
+				</div>
+				<!-- END USER BAR -->
+				<div class="navbar-btn">
+					<button type="button" class="btn-toggle-fullwidth"><i
+							class="lnr lnr-arrow-left-circle"></i></button>
+				</div>
+				<div id="navbar-menu">
+				</div>
+			</div>
+		</nav>
+		<!-- END NAVBAR -->
+		<!-- LEFT SIDEBAR -->
+		<div id="sidebar-nav" class="sidebar">
+			<div class="sidebar-scroll">
+				<nav>
+					<ul class="nav">
+						<li><a class=""><i></i><span></span></a></li>
+						<li><a href="fish.ejs" class=""><i class="lnr lnr-home"></i><span>魚隻測量資料分析</span></a>
+						</li>
+						<li><a href="analysis.ejs" class=""><i class="lnr lnr-chart-bars"></i><span>LNG
+									廠水質資料</span></a></li>
+						<li><a href="statistics.ejs" class=""><i class="lnr lnr-dice"></i><span>LNG 廠投餌資料</span></a>
+						</li>
+						<li><a href="waterquality.ejs" class=""><i class="lnr lnr-drop"></i><span>恆春箱網水質資訊</span></a>
+						</li>
+						<!-- <li><a href="analysis_record.ejs" class=""><i class="lnr lnr-code"></i><span>聲納資料</span></a>
+					</li>  -->
+						<li><a href="a13.ejs" class="active"><i class="lnr lnr-drop"></i><span>a13水質資訊</span></a>
+						</li>
+						<li><a href="downloads.ejs" class=""><i class="lnr lnr-code"></i><span>資料下載(csv)</span></a>
+						</li>
+						<li><a href="vr.ejs" target="_blank" class=""><i
+									class="fa fa-cubes"></i><span>VR編輯模擬平台</span></a>
+						</li>
+				</nav>
+			</div>
+		</div>
+		<!-- END LEFT SIDEBAR -->
+		<!-- MAIN -->
+
+		<div class="main">
+			<!-- MAIN CONTENT -->
+			<video id="stream" src="" type="video/ogg" width="600" height="450" autoplay="autoplay" controls="controls"
+				loop="loop">
+				Your browser does not support the video tag.
+			</video>
+			<!-- END MAIN CONTENT -->
+		</div>
+		<!-- END MAIN -->
+		<div class="clearfix"></div>
+		<footer>
+			<div class="container-fluid">
+				<p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I
+						Need</a>.
+					All Rights Reserved.</p>
+			</div>
+		</footer>
+	</div>
+	<!-- END WRAPPER -->
+
+	<!-- Javascript -->
+	<!-- <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="assets/scripts/klorofil-common.js"></script> -->
+</body>
+
+<script>
+	function LoadVideo() {
+		$.ajax({
+			type: "GET",
+			dataType: 'json',
+			url: "/stream",
+			async: true,
+			success: function (data) {
+				console.log("<%= host %>");
+				console.log("<%= url %>");
+				$("#stream").attr("src", "<%= url %>");
+			},
+			error: function (xmlhttprequest, textstatus, message) {
+				console.log("<%= host %>");
+				console.log("<%= url %>");
+				console.log(xmlhttprequest);
+			}
+		});
+	}
+
+</script>
+
+</html>

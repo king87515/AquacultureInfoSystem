@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: dccweb
+    annotations:
+        kubernetes.io/ingress.class: "nginx"
+
+spec:
+    rules:
+    - host: "xxx.xxx.ntou.edu.tw"
+      http:
+          paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+                service:
+                    name: dccweb
+                    port:
+                        number: 80

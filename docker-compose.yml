@@ -1,0 +1,32 @@
+version: "3.4"
+
+services:
+  db:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./tmp/data/db:/data/db
+  dccweb:
+    image: 140.121.xxx.xx:5000/dccweb:v9
+    build: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - .:/app
+    links:
+      - db
+    command: >
+      /bin/sh -c '
+      while ! nc -z db 27017;
+      do
+        echo "waiting for database ...";
+        sleep 3;
+      done;
+      echo "db is ready!";
+      npm start;
+      '

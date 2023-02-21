@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en" class="fullscreen-bg">
+
+<head>
+	<!-- Required meta tags -->
+	<script>
+		var checkingemailcode = "";
+	</script>
+	<title>Register</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" type="text/css" href="assets/scripts/jquery-ui-1.12.1.custom/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="assets/scripts/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/scripts/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css" />
+
+	<link type="text/css" rel="stylesheet" href="assets/scripts/jsgrid-1.5.3/jsgrid.min.css" />
+	<link type="text/css" rel="stylesheet" href="assets/scripts/jsgrid-1.5.3/jsgrid-theme.min.css" />
+
+	<script type="text/javascript" src="assets/scripts/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="assets/scripts/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+	<script type="text/javascript" src="assets/scripts/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="assets/scripts/jsgrid-1.5.3/jsgrid.min.js"></script>
+
+	<link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="assets/vendor/linearicons/style.css">
+	<link rel="stylesheet" href="assets/vendor/chartist/css/chartist-custom.css">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" href="assets/css/main.css">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/icon.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="assets/img/icon.png">
+	<title>Register</title>
+
+	<script type="text/javascript" src="assets/scripts/captcha_com.js"></script>
+</head>
+<!-- dialog -->
+<style>
+	.ui-dialog-titlebar {
+		background-color: rgb(83, 163, 238);
+		color: white;
+	}
+
+	.ui-dialog-titlebar-close {
+		display: none;
+	}
+</style>
+</head>
+<div id="company_submit_dialog" style='font-family: "Microsoft JhengHei";' title="請輸入認證碼">
+	<form>
+		<fieldset>
+			<table style="border-collapse:separate; text-align: left;
+       border-spacing: 10px; margin-left:auto; margin-right:auto;">
+				<tr></tr>
+				<tr>
+					<td>
+						<label style="display: inline-block; margin-left: 20px; width: 140px;">認證碼已寄至email：</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label style="display: inline-block; margin-left: 20px; width: 140px;" id="com_email"></label>
+					</td>
+				</tr>
+				<tr></tr>
+				<tr></tr>
+				<tr>
+					<td>
+						<label style="display: inline-block; margin-left: 20px;">請至信箱收取信件，若未收到信件請稍後。</label>
+					</td>
+				</tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr>
+					<td>
+						<label style="display: inline-block; margin-left: 20px; width: 100px;">email認證碼：</label>
+						<input style="display: inline-block;" class="input_text" type="text" name="emailcode"
+							id="emailcode" value="" class="text ui-widget-content ui-corner-all">
+					</td>
+				</tr>
+
+			</table>
+		</fieldset>
+		<input style="height: 30px; line-height: 0px; margin-top: 50px; margin-right: 10px;" type="button"
+			onclick="click_resendemail()" name="pass_dialog_close" id="pass_dialog_close"
+			class="btn btn-primary head_button" value="重發認證碼">
+		<script>
+			function click_resendemail() {
+				checkingemailcode = makerandomletter(10);
+				//console.log(checkingemailcode);
+				//$("#checkingcode").text(checkingemailcode);
+				$('#com_email').text($('#email').val());
+				//$('#com_phone').text($('#CompanyPhone').val());
+				dialog.dialog("open");
+				sendMail($("#email").val(), '智慧箱網平台註冊使用安全性驗證碼',
+					'<h1>智慧箱網平台 安全性驗證碼</h1><p>安全密碼:' + checkingemailcode + '</p><p>謝謝您!' + $("#Username").val() + '</p>');
+			}
+
+			function sendMail(emailto, emailtitle, emailbody) {
+				$.ajax({
+					url: "<%= host %>/sendEmail",
+					dataType: 'json',
+					contentType: "application/json; charset=utf-8",
+					type: 'POST',
+					async: false,
+					data: JSON.stringify({
+						emailto: emailto,
+						emailtitle: emailtitle,
+						emailbody: emailbody,
+					}),
+					success: function (msg_data) {
+						console.log(msg_data);
+					},
+					error: function (xmlhttprequest, textstatus, message) {
+						console.log(xmlhttprequest);
+					}
+				});
+			}
+
+			function makerandomletter(max) {
+				var text = "";
+				var possible = "0987654321ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+				for (var i = 0; i < max; i++)
+					text += possible.charAt(Math.floor(Math.random() * possible.length));
+				return text;
+			}
+		</script>
+
+		<input style="height: 30px; width: 80px; line-height: 0px; margin-top: 50px; margin-right: 10px;" type="button"
+			name="code-dialog_submit" id="code-dialog_submit" class="btn btn-primary head_button" value="確認"
+			onclick="confirmbutton()">
+		<script>
+			function confirmbutton() {
+				console.log($("#emailcode").val());
+				if ((checkingemailcode != "") && (checkingemailcode == $("#emailcode").val())) {
+
+
+					$.ajax({
+						url: "<%= host %>/db/userReg",
+						dataType: 'json',
+						contentType: "application/json; charset=utf-8",
+						type: 'POST',
+						async: false,
+						data: JSON.stringify({
+							fullName: $("#fullname").val(),
+							userName: $("#Username").val(),
+							email: $("#email").val(),
+							phone: $("#phone").val(),
+							userPwd: $("#rPwd").val(),
+							createTime: Date.now(),
+						}),
+						success: function (msg_data) {
+
+						},
+						error: function (xmlhttprequest, textstatus, message) {
+							//console.log(xmlhttprequest);
+						}
+					});
+
+					dialog.dialog("close");
+					remind_dialog.dialog("open");
+					$('#fullname_ok').text($('#fullname').val());
+					$('#user_ok').text($('#Username').val());
+					$('#email_ok').text($('#email').val());
+					$('#phone_ok').text($('#phone').val());
+					$('#pwd_ok').text($('#rPwd').val());
+
+				} else {
+					confirm("認證碼不正確!");
+				}
+			}
+		</script>
+
+		<input style="height: 30px; line-height: 0px; margin-top: 50px;" type="button"
+			onclick="click_submit_dialog_close()" name="submit_dialog_close" id="submit_dialog_close"
+			class="btn btn-primary head_button" value="返回">
+		<script>
+			function click_submit_dialog_close() {
+				dialog.dialog("close");
+			}
+		</script>
+	</form>
+</div>
+
+<div id="submit_remind_dialog" style='font-family: "Microsoft JhengHei";' title="提醒">
+	<form>
+		<fieldset>
+			<table style="border-collapse:separate; text-align: left;
+       border-spacing: 10px; margin-left:auto; margin-right:auto;">
+				<tr>
+					<td>
+						<label style="display: inline-block; margin-left: 20px;"><span id="fullname_ok"></span>&nbsp;感謝您註冊使用!</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label style="display: inline-block; margin-left: 20px;">Username:&nbsp;<span id="user_ok"></span></label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label style="display: inline-block; margin-left: 20px;">Email:&nbsp;<span id="email_ok"></span></label>
+						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label style="display: inline-block; margin-left: 20px;">Phone:&nbsp;<span id="phone_ok"></span></label>
+						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label style="display: inline-block; margin-left: 20px;">Password:&nbsp;<span id="pwd_ok"></span></label>
+						
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+		<input style="height: 30px; width: 80px; line-height: 0px; margin-top: 50px; margin-right: 10px;" type="button"
+			name="submit_remind_dialog_closing" id="submit_remind_dialog_closing" class="btn btn-primary head_button"
+			value="確認" onclick="remind_dialog_closing()">
+		<script>
+			function remind_dialog_closing() {
+				remind_dialog.dialog("close");
+				document.location.href = '<%= host %>';
+			}
+		</script>
+	</form>
+</div>
+<script>
+	var dialog = $("#company_submit_dialog").dialog({
+		autoOpen: false,
+		resizable: false,
+		height: 400,
+		width: 460,
+		draggable: false,
+		modal: true
+	});
+
+	var remind_dialog = $("#submit_remind_dialog").dialog({
+		autoOpen: false,
+		resizable: false,
+		height: 400,
+		width: 460,
+		draggable: false,
+		modal: true
+	});
+</script>
+
+
+<!-- body content -->
+
+<body>
+	<div id="contentContainer" class="container">
+		<div class="row">
+			<div id="realContent" class="col-xs-12 text-center">
+				<div class="row">
+					<div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-xs-12 col-sm-offset-0">
+
+						<h1>Sign Up</h1>
+
+					</div>
+				</div>
+				<div class="row">
+					<!-- <section class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-xs-12 col-sm-offset-0"> -->
+					<div class="well well-lg">
+						<div class="row">
+							<!-- Registration Form -->
+							<div class="col-sm-12 col-xs-12">
+								<div class="row" style="padding: 0% 25%;">
+									<div class="col-xs-12">
+										<div class="header">
+											<div class="logo text-center"><img src="assets/img/icon.png"
+													alt="smart cage culture">
+											</div>
+											<p class="lead">Create Account</p>
+										</div>
+										<form id="login-form" class="form-auth-small">
+											<div class="form-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text"> <i class="fa fa-user-secret"></i>
+													</span>
+												</div>
+												<input id="fullname" name="" class="form-control"
+													placeholder="Full name" type="text" required />
+											</div> <!-- form-group// -->
+											<div class="form-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text"> <i class="fa fa-user"></i>
+													</span>
+												</div>
+												<input id="Username" name="" class="form-control" placeholder="Username"
+													type="text" required />
+											</div> <!-- form-group// -->
+											<div class="form-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text"> <i class="fa fa-envelope"></i>
+													</span>
+												</div>
+												<input id="email" name="" class="form-control"
+													placeholder="Email address" type="email" required />
+											</div> <!-- form-group// -->
+											<div class="form-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text"> <i class="fa fa-phone"></i>
+													</span>
+												</div>
+												<input id="phone" name="" class="form-control"
+													placeholder="Phone number" type="text" required />
+											</div> <!-- form-group// -->
+											<div class="form-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text"> <i class="fa fa-lock"></i>
+													</span>
+												</div>
+												<input id="cPwd" class="form-control" placeholder="Create password"
+													type="password" required />
+											</div> <!-- form-group// -->
+											<div class="form-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text"> <i class="fa fa-lock"></i>
+													</span>
+												</div>
+												<input id="rPwd" class="form-control" placeholder="Repeat password"
+													type="password" required />
+											</div> <!-- form-group// -->
+											<div class="form-group">
+												<tr style="line-height: 26px;">
+													<td>
+														<label
+															style="display: inline-block; color:red; margin-left: 20px;">*</label>
+														<label
+															style="display: inline-block; margin-right: 10px;">認證碼</label>
+													</td>
+													<td>
+														<input style="width: 300px;"
+															class="input_text text ui-widget-content ui-corner-all"
+															type="text" id="comp_vcode" name="comp_vcode" required>
+													</td>
+													<td>
+														<img Align="left" style="margin-left: 10px; display: inline;"
+															onclick="createCaptcha()" src="assets/img/refreshicon.png"
+															width="20" height="20">
+														<div id="com_captcha" style="display: inline;"></div>
+												</tr>
+
+												<script>
+													createCaptcha();
+												</script>
+											</div>
+
+											<div class="form-group">
+												<input type="submit" class="btn btn-primary btn-block"
+													value="Create Account">
+											</div> <!-- form-group// -->
+											<p class="text-center">Have an account? <a href="/login">Log In</a> </p>
+										</form>
+									</div>
+									<!-- /.col-xs-12 -->
+								</div>
+								<!-- /.row -->
+							</div>
+							<!-- /.col-sm-6 col-xs-12 -->
+						</div>
+						<!-- /.row -->
+					</div>
+					<!-- /.well well-lg -->
+					<!-- </section> -->
+					<!-- /.col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-xs-12 col-sm-offset-0 -->
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /#realContent -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /#contentContainer -->
+</body>
+
+<script type="text/javascript">
+	$("#login-form").on('submit', function (e) {
+		e.preventDefault();
+
+		if ($("#cPwd").val() != $("#rPwd").val()) {
+			alert("密碼驗證輸入不正確!");
+			return;
+		}
+
+		if (!validateCaptcha()) {
+			return;
+		}
+		var pass = true;
+		var users = [];
+		$.ajax({
+			type: "GET",
+			dataType: 'json',
+			url: "<%= host %>/db/userReg",
+			async: false,
+			success: function (data) {
+				users = data;
+			}
+		});
+
+		for (var i = 0; i < users.length; i++) {
+			if ($("#Username").val() == users[i].userName) {
+				alert("此使用者名稱已存在!");
+				pass = false;
+				return;
+			}
+		}
+
+		for (var i = 0; i < users.length; i++) {
+			if ($("#email").val() == users[i].email) {
+				alert("此Email使用者已存在!");
+				pass = false;
+				return;
+			}
+		}
+
+
+		if (pass == true) {
+			checkingemailcode = makerandomletter(10);
+			// console.log(checkingemailcode);
+			//$("#checkingcode").text(checkingemailcode);
+			$('#com_email').text($('#email').val());
+			//$('#com_phone').text($('#CompanyPhone').val());
+			dialog.dialog("open");
+			sendMail($("#email").val(), '智慧箱網平台註冊使用安全性驗證碼',
+				'<h1>智慧箱網平台 安全性驗證碼</h1><p>安全密碼:' + checkingemailcode + '</p><p>謝謝您!' + $("#Username").val() + '</p>');
+
+		}
+	});
+
+	function sendMail(emailto, emailtitle, emailbody) {
+		$.ajax({
+			url: "<%= host %>/sendEmail",
+			dataType: 'json',
+			contentType: "application/json; charset=utf-8",
+			type: 'POST',
+			async: false,
+			data: JSON.stringify({
+				emailto: emailto,
+				emailtitle: emailtitle,
+				emailbody: emailbody,
+			}),
+			success: function (msg_data) {
+				console.log(msg_data);
+			},
+			error: function (xmlhttprequest, textstatus, message) {
+				console.log(xmlhttprequest);
+			}
+		});
+	}
+
+	function makerandomletter(max) {
+		var text = "";
+		var possible = "0987654321ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+		for (var i = 0; i < max; i++)
+			text += possible.charAt(Math.floor(Math.random() * possible.length));
+		return text;
+	}
+</script>
+
+</html>

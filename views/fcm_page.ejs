@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <!-- ICONS -->
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/icon.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/img/icon.png">
+
+</head>
+
+<body>
+    <h2>Firebase Web Push Notification Example</h2>
+    <p id="token"></p>
+
+    <h3>Notification.permission</h3>
+    <p id="np"></p>
+
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCLZTJUNHRv1KzfbmJTzXwCpfONWhwp7pA",
+            authDomain: "webnotifysystem.firebaseapp.com",
+            projectId: "webnotifysystem",
+            storageBucket: "webnotifysystem.appspot.com",
+            messagingSenderId: "1049077821062",
+            appId: "1:1049077821062:web:2fb08320f6a430ee3cab07",
+            measurementId: "G-8GMFBBX310"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
+
+        navigator.serviceWorker.register('js/script/firebase-messaging-sw.js')
+            .then((registration) => {
+                messaging.useServiceWorker(registration);
+
+                // Request permission and get token.....
+                async function IntitalizeFireBaseMessaging() {
+                    await messaging
+                        .requestPermission()
+                        .then(async function () {
+                            console.log("Notification Permission");
+                            return await messaging.getToken();
+                        })
+                        .then(function (token) {
+                            console.log("Token : " + token);
+                            document.getElementById("token").innerHTML = token;
+                        })
+                        .catch(function (reason) {
+                            console.log(reason);
+                        });
+                }
+
+                messaging.onMessage(function (payload) {
+                    console.log(payload);
+                    document.getElementById("np").innerHTML = Notification.permission;
+                    const notificationOption = {
+                        body: payload.notification.body,
+                        icon: payload.notification.icon
+                    };
+
+                    if (Notification.permission === "granted") {
+                        var notification = new Notification(payload.notification.title, notificationOption);
+                        notification.onclick = function (ev) {
+                            ev.preventDefault();
+                            window.open(payload.notification.click_action, '_blank');
+                            notification.close();
+                        }
+                    }
+                    // self.registration.showNotification(payload.notification.title, notificationOption);
+
+                });
+                messaging.onTokenRefresh(function () {
+                    messaging.getToken()
+                        .then(function (newtoken) {
+                            console.log("New Token : " + newtoken);
+                        })
+                        .catch(function (reason) {
+                            console.log(reason);
+                        })
+                })
+                IntitalizeFireBaseMessaging();
+            });
+
+    </script>
+</body>
+
+</html>

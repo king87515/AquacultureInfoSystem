@@ -1,0 +1,43 @@
+/*{
+	border: solid 2px black;
+}*/
+.webgl-content * { margin: 0; padding: 0}
+.webgl-content {position: absolute; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);}
+
+.webgl-content .logo, .progress {position: absolute; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);}
+.webgl-content .logo {background: url('../TemplateData/blue_logo.png') no-repeat center / contain; width: 154px; height: 130px;}
+.webgl-content .progress {height: 18px; width: 141px; margin-top: 90px;}
+.webgl-content .progress .empty {background: url('../TemplateData/progressEmpty.Light.png') no-repeat right / cover; float: right; width: 100%; height: 100%; display: inline-block;}
+.webgl-content .progress .full {background: url('../TemplateData/progressFull.Light.png') no-repeat left / cover; float: left; width: 0%; height: 100%; display: inline-block;}
+
+.webgl-content .logo.Dark {background-image: url('../TemplateData/white_logo.png');width:250px;height:250px; contain;}
+.webgl-content .progress.Dark .empty {background-image: url('../TemplateData/progressEmpty.Dark.png');margin-top: 50px;}
+.webgl-content .progress.Dark .full {background-image: url('../TemplateData/progressFull.Dark.png');margin-top: 50px;}
+
+.webgl-content .footer {margin-top: 5px;width:100%; height: 100px; line-height: 38px; font-family: Helvetica, Verdana, Arial, sans-serif; font-size: 18px;}
+
+.webgl-content .footer .logos{width:20%;float: left;}
+.webgl-content .footer .info{width:80%;color:black;font-weight: bolder;display: inline-block;vertical-align: middle;}
+
+.webgl-content .footer .logos .webgl-logo {background-image: url('../TemplateData/logo_text.png'); margin-top:12px;width:100%;height:70px;background-size: contain; float: left;}
+
+
+
+.webgl-content .footer .info  .b_title{width:280px;font-size: 17px;display: inline-block;padding-left: 50px;margin-top: 25px;color: #3887BF;}
+.webgl-content .footer .info  .notice{width:200px;font-size: 17px;display: inline-block;padding-left: 30px;color: #3887BF;}
+
+.webgl-content .footer .info  .fullscreen{width:50px;height:50px;float:right;margin-top: 10px;}
+@media only screen and (max-width: 1270px) {
+	.webgl-content .footer .info {width:30%;}
+	.webgl-content .footer .info .up .googleform{display: none}
+}
+@media only screen and (max-width: 1290px) {
+	
+	.webgl-content .footer .info .down{display: none}
+	.webgl-content .footer .info .up .link .ntou_web_link {display: none}
+}
+@media only screen and (max-width: 1300px) {
+	.webgl-content .footer .info .down .notice{width:300px;vertical-align:top;font-size: 12px;float:right;}
+	.webgl-content .footer .info .down .suggest .title{height:100%;display: inline-block;vertical-align:top;font-size: 12px;}
+
+}

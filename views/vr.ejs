@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | VR_Editor</title>
+    <link rel="shortcut icon" href="assets/TemplateData/favicon.ico">
+    <link rel="stylesheet" href="assets/TemplateData/style.css">
+	<link rel="stylesheet" href="assets/css/index_style.css">
+    <script src="assets/TemplateData/UnityProgress.js"></script>
+    <script src="assets/Build/UnityLoader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+
+    <script>
+        var unityInstance = UnityLoader.instantiate("unityContainer", "assets/Build/Builds.json", { onProgress: UnityProgress });
+        function MongoPost(a) {
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                type: "post",
+                async: false,
+                url: "https://xxx.xxx.ntou.edu.tw/db/vrUser",
+                dataType: "json",
+                data: a,
+                success: function (request) {
+                    console.log(request);
+                    unityInstance.SendMessage("UIController", "ShowData");
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            });
+        }
+        function MongoGet() {
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                type: "get",
+                async: false,
+                url: "https://xxx.xxx.ntou.edu.tw/db/vrUser",
+                dataType: "json",
+                success: function (data) {
+                    var datas = [];
+                    console.log("1", data);
+                    for (var i = 0; i < data.length; i++) {
+                        var temp = {
+                            "id": data[i]._id,
+                            "user": data[i].user,
+                            "password": data[i].password,
+                            "time": data[i].time,
+                            "objDataList": data[i].objDataList,
+                            "camDataList": data[i].camDataList
+                        }
+                        datas.push(temp);
+                        //delete data[i]._id;
+                    }
+                    data = datas;
+                    console.log("2", data);
+                    console.log(JSON.stringify(data));
+                    unityInstance.SendMessage("DataManager", "GetAllUserDataList", JSON.stringify(data));
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            });
+
+        }
+        function MongoGetByID(id) {
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                type: "get",
+                async: false,
+                url: "https://xxx.xxx.ntou.edu.tw/db/vrUser/" + id,
+                dataType: "json",
+                success: function (data) {
+                    console.log("1", data);
+                    var temp = {
+                        "id": data._id,
+                        "user": data.user,
+                        "password": data.password,
+                        "time": data.time,
+                        "objDataList": data.objDataList,
+                        "camDataList": data.camDataList
+                    }
+                    data = temp;
+                    console.log("2", data);
+                    console.log(JSON.stringify(data));
+                    unityInstance.SendMessage("DataManager", "GetAllUserDataList", JSON.stringify(data));
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            });
+
+        }
+        function MongoDelete(id) {
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                type: "delete",
+                async: false,
+                url: "https://xxx.xxx.ntou.edu.tw/db/vrUser/" + id,
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            });
+
+        }
+
+    </script>
+</head>
+<style type="text/css">
+   body {
+    color: purple;
+    background-color: 	#000000 }
+  .gameContainer{
+  
+    z-index:0;
+  }
+  img{
+    position:absolute;
+    top:0%;
+    left:20%;
+  
+    z-index:1;
+  }
+  </style>
+<body>
+    <div class="webgl-content">
+      <div class="gameContainer" id="unityContainer" style="width:80vw; height: 80vh"></div>
+      <div class="footer">
+        <div class="logos">
+          <div class="webgl-logo"></div>
+          <div class="webgl-logo-label"></div>
+        </div>
+        <div class="info">
+              <div class="b_title">支援瀏覽器:Edge,Firefox,Chrome</div>
+            <div class="notice">載入時間約1至5分鐘</div>
+			<!-- <div class="notice">檔請稍後...</div> -->
+			<div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
