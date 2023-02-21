@@ -5,5 +5,5 @@ Information System and Visualization Platform for Aquaculture
 
 `nodejs` `express` `mongodb` `node-schedule` `nodemailer`
 `EJS` `D3.js` `Chart.js`
-`https` `ssl ``certbot`
+`https` `ssl` `certbot`
 `docker` `kubernetes` `k8s`
